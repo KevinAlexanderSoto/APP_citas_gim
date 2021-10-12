@@ -16,3 +16,5 @@ router.post('/',Postcitas);
 router.put('/',Putcitas);
 
 router.delete('/',Deletecitas);
+
+module.exports = router;

@@ -1,8 +1,8 @@
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
 
-const Getuser = ()=>{
-
+const Getuser = (req = request , resp = response)=>{
+resp.json({msg : 'Todo ok '});
 };
 
 const Postuser  = ()=>{

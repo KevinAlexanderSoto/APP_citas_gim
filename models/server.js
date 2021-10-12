@@ -8,8 +8,8 @@ class Server{
         this.PORT = process.env.PORT;
 
         //rutas
-        this.Usuarios_RoutPath = 'gim/usuarios'; 
-        this.Cita_RoutPath = 'gim/citas';
+        this.Usuarios_RoutPath = '/gim/usuarios'; 
+        this.Cita_RoutPath = '/gim/citas';
 
         this.middlewares();
 
@@ -31,8 +31,8 @@ class Server{
     listen(){
         this.app.listen(this.PORT);
 
-        console.log('server corriendo en puerto'+this.PORT);
-    }
+        console.log('server corriendo en puerto '+ this.PORT);
+    };
 
 };
 
