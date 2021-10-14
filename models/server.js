@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors') ;
-
+const {DB} = require('../db/connect') ;
 class Server{
 
     constructor(){
@@ -12,7 +12,7 @@ class Server{
         this.Cita_RoutPath = '/gim/citas';
 
         this.middlewares();
-
+        this.dbConnection();
         this.routes();
     };
     routes(){
@@ -28,6 +28,16 @@ class Server{
         this.app.use(express.json());
     
     };
+    async dbConnection(){
+        try {
+            await DB.authenticate();
+            console.log('database online');
+        } catch (error) {
+            throw new Error(error);
+        }
+        
+        
+    }
     listen(){
         this.app.listen(this.PORT);
 

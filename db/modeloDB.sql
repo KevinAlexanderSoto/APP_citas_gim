@@ -77,3 +77,9 @@ VALUES ('SICOLOGIA','PRO'),
         ('INGENIERIA_ELECTRONICA','PRO'),
         ('EGRESADO','EGRE'),
         ('EMPLEADO','TRAB');
+
+     INSERT INTO Horas(hora_incio,hora_final)
+  VALUES('6:00','7:30'),
+  ('8:00','9:30'),
+  ('10:00','11:30'),
+  ('12:00','1:30');
