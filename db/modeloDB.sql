@@ -4,7 +4,7 @@ use bilecef1ot7xfqd9tfil;
 CREATE TABLE IF NOT EXISTS Clientes (
 client_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
 client_name VARCHAR(40) NOT NULL,
-num_identidad INT(20) NOT NULL,
+num_identidad INT(20) NOT NULL UNIQUE,
 pass_client VARCHAR(40) NOT NULL,
 tel INTEGER ,
 carrera_id  INTEGER UNSIGNED,
@@ -83,3 +83,27 @@ VALUES ('SICOLOGIA','PRO'),
   ('8:00','9:30'),
   ('10:00','11:30'),
   ('12:00','1:30');
+
+ SELECT * FROM Horas;
+  SELECT * FROM Carreras;
+  SELECT * FROM Clientes;
+  SELECT * FROM Clases;
+  SELECT * FROM Citas;
+
+  desc Clientes;
+  desc Carreras;
+  DESC Citas;
+  
+ INSERT INTO Clientes(client_name,num_identidad,pass_client,carrera_id,email,rol) 
+ VALUES ('KEVIN ALEXANDER' ,1287354,'123456p',3,'kevin@kevin.com','ES');
+
+ SELECT * FROM Clientes 
+ JOIN Carreras
+ ON Clientes.carrera_id = Carreras.carrera_id
+ where Clientes.rol = 'ES'; 
+
+ INSERT INTO Clases(nombre_clase,hora_id,dia)
+  VALUES('funcional','2','L');
+
+  INSERT INTO Citas(client_id,fecha,hora_id)
+  VALUES('1','2021-12-10','2');

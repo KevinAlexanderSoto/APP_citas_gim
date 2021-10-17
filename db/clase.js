@@ -18,7 +18,13 @@ dia :{
     type: DataTypes.ENUM('PRO','TECN','EGRE','TRAB'),
     allowNull : true
 }
-});
+},{
+    // I don't want createdAt and updatedAt
+
+    createdAt: false,
+
+  updatedAt: false,
+ });
 
 module.exports = {
     Clases

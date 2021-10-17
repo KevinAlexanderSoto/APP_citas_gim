@@ -1,7 +1,7 @@
 const {DataTypes}= require('sequelize')
 const { DB } = require('./connect')
-
-const Usuario = DB.define('Usuario',{
+const {Carreras} = require ('./carrera.js');
+const Usuario = DB.define('Cliente',{
     client_id:{
         type : DataTypes.INTEGER.UNSIGNED,
         primaryKey : true,
@@ -24,7 +24,7 @@ tel : {
 },
 carrera_id :{
     type : DataTypes.INTEGER.UNSIGNED,// ESTA ES LA LLEVE FORANEA EN MI TABLA 
-    allowNull : false
+    allowNull : false,
 },
 email : {
     type : DataTypes.STRING(100),
@@ -39,7 +39,13 @@ rol :{
     type : DataTypes.ENUM('ES','EG','AD','TR'),
     allowNull : false
 }
-});
+},{
+    // I don't want createdAt and updatedAt
+
+    createdAt: false,
+
+  updatedAt: false,
+ });
 
 module.exports = {
     Usuario

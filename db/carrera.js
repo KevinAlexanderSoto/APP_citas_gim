@@ -15,7 +15,13 @@ tipo :{
     type: DataTypes.ENUM('PRO','TECN','EGRE','TRAB'),
     allowNull : false
 }
-});
+},{
+    // I don't want createdAt and updatedAt
+
+    createdAt: false,
+
+  updatedAt: false,
+ });
 
 module.exports = {
     Carreras
