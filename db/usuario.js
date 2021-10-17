@@ -16,7 +16,7 @@ num_identidad : {
     allowNull: false
 },
 pass_client :{
-    type : DataTypes.STRING(40),
+    type : DataTypes.STRING(100),
     allowNull : false
 },
 tel : {

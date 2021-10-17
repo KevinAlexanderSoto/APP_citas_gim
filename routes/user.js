@@ -1,5 +1,5 @@
-const {Router} = require('express');
-const {check} = require('express-validator');
+const {Router, query} = require('express');
+const {check, body} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
 
@@ -12,9 +12,13 @@ const { existeNum, existeCarrera, existeEmail } = require('../helpers/validarCam
 const {validarExisteRol} = require('../helpers/validarENUM');
 
 //TODO: solo con perimiso De admin , devuelve todos los usuarios paginados 
-router.get('/',Getuser);
+router.get('/',[
+    check('offset','tiene que ser un numero, entero').isInt(),
+    check('limit','tiene que ser un numero, entero').isInt(),
+    validarCampos
+],Getuser);
 
-//TODO: crear nuevo usuario segun requerimiento de la DB 
+//TODO: crear nuevo usuario ADMIN con token valido de otro ADMIN 
 router.post('/',[
 check('nombre','nombre no valido').isString().isLength({max : 40}).not().isEmpty(),
 
@@ -38,8 +42,24 @@ check('rol').custom(validarExisteRol),
 validarCampos,
 ],Postuser);
 
-router.put('/',Putuser);// TODO: actualizar datos como : CC , carrera , numero 
 
-router.delete('/',Deleteuser);//TODO : PASAR A ESTADO INACTIVO 
+// TODO: actualizar datos como : CC , carrera , numero. VALIDAR USER CON JWT
+router.put('/',[
+    body('nombre','nombre no valido').default('noName').isString().isLength({max : 40}),
+   body('numIdentidad','Valor no valido').default(00).isInt().isLength({max : 20}), 
+   body('numIdentidad').default(00).custom(existeNum),
+   body('tel','solo numeros').default(111).isInt(),
+   body('carrera').default(0).custom(existeCarrera),
+   body('carrera','la carrera se referencia con un numero').default(0).isInt(),
+   
+body('email','no es un correo valido').default('noemail@no.com').isLength({max : 80}).isEmail(),
+body('email').default('noemail@no.com').custom(existeEmail),
+check('rol','Rol no es valido , solo dos letras').default('no').isString().isLength({max : 2}),
+check('rol').default('no').custom(validarExisteRol),
+check('id','Falta el id a actualizar o no es valido').isInt().not().isEmpty(),
+   validarCampos 
+],Putuser); 
+
+router.delete('/',Deleteuser);//TODO : PASAR A ESTADO INACTIVO , solo usuario ADMIN "AD"
 
 module.exports = router;

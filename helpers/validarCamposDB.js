@@ -14,11 +14,13 @@ if (result) {
 
 const existeCarrera =  async (param)=>{
 
-    const result = await Carreras.findOne({where:{carrera_id : param}});
-    
-    if (!result) {
-        throw new Error('no existe esta carrera');
+    if (!param == 0) {
+        const result = await Carreras.findOne({where:{carrera_id : param}});
+        if (!result) {
+            throw new Error('no existe esta carrera');
+        }
     }
+   
     
     };
 

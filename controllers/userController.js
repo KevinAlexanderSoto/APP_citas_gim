@@ -7,10 +7,35 @@ const {Horas ,
        Citas} =  require('../db/indexDB');
 
 
+
 const Getuser = async (req = request , resp = response)=>{
-
-
+   const {offset=0 , limit=10 } = req.query;
+   const desde = parseInt(offset);
+   const hasta = parseInt(limit);
     try {
+        const usuario = await Usuario.findAndCountAll({
+            where: {
+                activo : 1
+        },
+        
+        include : {
+         model :  Carreras,
+         attributes : ["nombre_carrera","tipo"]
+        },
+        attributes : ["client_name","num_identidad","tel","email","rol"],
+        offset: desde , limit : hasta 
+        
+        });
+
+        resp.json({
+            msg : 'Todo ok ',
+            usuario });
+
+    } catch (error) {
+        console.log(error);
+    } 
+
+    /* try {
         const clase = await Citas.findAll({
         include : 
          [Usuario,Horas]
@@ -24,7 +49,7 @@ const Getuser = async (req = request , resp = response)=>{
 
     } catch (error) {
         console.log(error);
-    }
+    } */
 
    /*  try {
         const clase = await Clases.findAll({
@@ -42,46 +67,8 @@ const Getuser = async (req = request , resp = response)=>{
         console.log(error);
     } */
 
-    /* try {
-        const usuario = await Usuario.findAll({
-            where: {
-                rol : 'TR'
-        },
-        
-        include : {
-         model :  Carreras
-        }
-        
-        });
-
-        resp.json({
-            msg : 'Todo ok ',
-            usuario });
-
-    } catch (error) {
-        console.log(error);
-    } */
-
-
-   /*  try {
-    const horas = await Usuario.create({
-        client_name : 'user7',
-        num_identidad : 1287354,
-        pass_client : '123456p',
-        carrera_id : 5, 
-        email :'user7@kevin.com',
-        rol : 'TR'
-
-    });
-    horas.save();
-
-    resp.json({msg : 'Todo ok ',
-    horas });
-
-} catch (error) {
-console.log(error);    
-} */
-    
+    /* 
+ 
    /*  const horas = await Horas.create({
         hora_incio : '2:00',
         hora_final : '3:30'
@@ -95,16 +82,104 @@ const Postuser  = async (req = request , resp = response)=>{
 
     const {nombre,numIdentidad,password, tel ,carrera,email,rol} =  req.body;
 
-resp.json({
-    nombre,numIdentidad,password
-});
+       //encriptar contraseña
+       const salt = bcryptjs.genSaltSync(11);
+       const hash = bcryptjs.hashSync(password,salt);
+    
+    try {
+     
+        const newuser = await Usuario.create({
+            client_name : nombre,
+            num_identidad : numIdentidad,
+            pass_client : hash,
+            carrera_id : carrera, 
+            email : email,
+            rol : rol,
+            tel : tel
+    
+        });
+
+        await newuser.save();
+
+        console.log(newuser);//BORRAR ESTO
+
+    } catch (error) {
+        console.log(error);
+
+        resp.status(500).json({
+            msg :'error creando en db',
+        });
+    }
+    
+    resp.json({
+        msg :'Creado Exitosamente'
+    });
 };
 
-const Putuser = ()=>{
+const Putuser = async (req = request , resp = response)=>{
+    let {nombre , numIdentidad ,tel ,carrera,email,rol}= req.body;
+    tel = parseInt(tel);
+    const {id} = req.query;
+    if (nombre !== 'noName') {
+        await Usuario.update({client_name : nombre},{
+            where : {
+                client_id : id
+            }
+        
+        })
+    }
 
+    if (numIdentidad !== 00) {
+        await Usuario.update({num_identidad : numIdentidad},{
+            where : {
+                client_id : id
+            }
+        
+        })
+    }
+
+    if (tel !== 111) {
+        await Usuario.update({tel : tel},{
+            where : {
+                client_id : id
+            }
+        
+        })
+    }
+
+    if (carrera !== 0) {
+        await Usuario.update({carrera_id : carrera},{
+            where : {
+                client_id : id
+            }
+        
+        })
+    }
+
+    if (email !== 'noemail@no.com') {
+        await Usuario.update({email : email},{
+            where : {
+                client_id : id
+            }
+        
+        })
+    }
+
+    if (rol !== 'no') {
+        await Usuario.update({rol : rol},{
+            where : {
+                client_id : id
+            }
+        
+        })
+    }
+    resp.json({
+       msg : 'Actualizacion Correcta'
+    })
 };
 
-const Deleteuser = ()=>{
+//TODO: falta implementar este servicio
+const Deleteuser = async (req = request , resp = response)=>{
 
 };
 

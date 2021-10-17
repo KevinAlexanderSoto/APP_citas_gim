@@ -1,7 +1,7 @@
 
 
 const validarExisteRol = async (param)=>{
-const RolValido = ['ES','EG','AD','TR'];
+const RolValido = ['ES','EG','AD','TR','no'];
 const result = await RolValido.includes(param);
 if (!result) {
     throw new Error('Rol no existe')
