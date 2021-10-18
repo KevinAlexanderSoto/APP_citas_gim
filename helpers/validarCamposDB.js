@@ -34,8 +34,19 @@ const existeCarrera =  async (param)=>{
         
         };
 
+    const existeUsuario = async(user)=>{
+        const result = await Usuario.findOne({where:{
+            client_id : user,
+            activo : 1
+        }});
+        if (result == null) {
+            throw new Error('Usuario No existe');
+        }
+    }; 
+
 module.exports = {
     existeNum,
     existeCarrera,
-    existeEmail
+    existeEmail,
+    existeUsuario
 };

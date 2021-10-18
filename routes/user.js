@@ -1,4 +1,4 @@
-const {Router, query} = require('express');
+const {Router} = require('express');
 const {check, body} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 const router = Router();
@@ -8,7 +8,7 @@ const {Getuser,
     Putuser,
     Deleteuser} = require('../controllers/userController');
 
-const { existeNum, existeCarrera, existeEmail } = require('../helpers/validarCamposDB');
+const { existeNum, existeCarrera, existeEmail, existeUsuario } = require('../helpers/validarCamposDB');
 const {validarExisteRol} = require('../helpers/validarENUM');
 
 //TODO: solo con perimiso De admin , devuelve todos los usuarios paginados 
@@ -46,20 +46,35 @@ validarCampos,
 // TODO: actualizar datos como : CC , carrera , numero. VALIDAR USER CON JWT
 router.put('/',[
     body('nombre','nombre no valido').default('noName').isString().isLength({max : 40}),
+
    body('numIdentidad','Valor no valido').default(00).isInt().isLength({max : 20}), 
+
    body('numIdentidad').default(00).custom(existeNum),
+
    body('tel','solo numeros').default(111).isInt(),
+
    body('carrera').default(0).custom(existeCarrera),
+
    body('carrera','la carrera se referencia con un numero').default(0).isInt(),
    
 body('email','no es un correo valido').default('noemail@no.com').isLength({max : 80}).isEmail(),
+
 body('email').default('noemail@no.com').custom(existeEmail),
+
 check('rol','Rol no es valido , solo dos letras').default('no').isString().isLength({max : 2}),
+
 check('rol').default('no').custom(validarExisteRol),
+
 check('id','Falta el id a actualizar o no es valido').isInt().not().isEmpty(),
+
    validarCampos 
 ],Putuser); 
 
-router.delete('/',Deleteuser);//TODO : PASAR A ESTADO INACTIVO , solo usuario ADMIN "AD"
+router.delete('/',[
+    body('data','id no valido o faltante ').isInt().not().isEmpty(),
+    body('data').custom(existeUsuario),
+    validarCampos,
+
+],Deleteuser);//TODO : solo usuario ADMIN "AD"
 
 module.exports = router;

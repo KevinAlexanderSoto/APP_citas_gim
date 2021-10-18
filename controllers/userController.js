@@ -111,7 +111,7 @@ const Postuser  = async (req = request , resp = response)=>{
         });
     }
     
-    resp.json({
+    resp.status(201).json({
         msg :'Creado Exitosamente'
     });
 };
@@ -178,9 +178,21 @@ const Putuser = async (req = request , resp = response)=>{
     })
 };
 
-//TODO: falta implementar este servicio
+
 const Deleteuser = async (req = request , resp = response)=>{
 
+    const {data}=req.body;
+
+    await Usuario.update({activo : 0},{
+        where : {
+            client_id : data
+        }
+    
+    })
+
+    resp.status(200).json({
+        msg : 'OK , barrado'
+    })
 };
 
 module.exports ={
