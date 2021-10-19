@@ -10,14 +10,17 @@ class Server{
         //rutas
         this.Usuarios_RoutPath = '/gim/usuarios'; 
         this.Cita_RoutPath = '/gim/citas';
+        this.Login_RoutPath = '/gim/login';
 
         this.middlewares();
         this.dbConnection();
         this.routes();
     };
+
     routes(){
         this.app.use(this.Usuarios_RoutPath,require('../routes/user'));
         this.app.use(this.Cita_RoutPath,require('../routes/citas'));
+        this.app.use(this.Login_RoutPath,require('../routes/login'));
     };
 
     middlewares(){

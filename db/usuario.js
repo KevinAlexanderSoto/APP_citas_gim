@@ -1,6 +1,6 @@
 const {DataTypes}= require('sequelize')
 const { DB } = require('./connect')
-const {Carreras} = require ('./carrera.js');
+
 const Usuario = DB.define('Cliente',{
     client_id:{
         type : DataTypes.INTEGER.UNSIGNED,

@@ -1,5 +1,9 @@
 const { response, request } = require('express');
+
 const bcryptjs = require('bcryptjs');
+
+const jwt = require('jsonwebtoken');
+
 const {Horas ,
        Usuario,
        Carreras,
@@ -32,40 +36,12 @@ const Getuser = async (req = request , resp = response)=>{
             usuario });
 
     } catch (error) {
+        resp.status(500).json({
+            msg : 'error en SERVER'
+             });
         console.log(error);
     } 
 
-    /* try {
-        const clase = await Citas.findAll({
-        include : 
-         [Usuario,Horas]
-        
-        
-        });
-
-        resp.json({
-            msg : 'Todo ok ',
-            clase });
-
-    } catch (error) {
-        console.log(error);
-    } */
-
-   /*  try {
-        const clase = await Clases.findAll({
-        include : {
-         model :  Horas
-        }
-        
-        });
-
-        resp.json({
-            msg : 'Todo ok ',
-            clase });
-
-    } catch (error) {
-        console.log(error);
-    } */
 
     /* 
  

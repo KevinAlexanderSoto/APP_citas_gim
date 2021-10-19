@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const {check, body} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
+
 const router = Router();
 
 const {Getuser,
