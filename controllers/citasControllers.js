@@ -11,11 +11,11 @@ const Getcitas = async(req = request,res = response)=>{
    const {year,month,day} = req.params
 
     try {
-        const clase = await Citas.findAll({
+        const clase = await Citas.findAndCountAll({
         include : [{ //JOIN ANIDADO :0
             model : Usuario,
             required: true, 
-            attributes :["client_name","num_identidad","tel","email","rol"],
+            attributes :["client_name","num_identidad","tel","email","rol","carrera_id"],
            include : {//include : { all: true, nested: true },//BUSCAR TODO RECURSIVAMENTE
                model : Carreras,
                attributes : ['nombre_carrera','tipo']
@@ -28,6 +28,7 @@ const Getcitas = async(req = request,res = response)=>{
     ],
          attributes : ['cita_id','fecha'],
          required: true,
+         offset: 0, limit : 20 
         
         
         });
@@ -51,11 +52,11 @@ const Postcitas  = async(req = request,res = response)=>{
 
 };
 
-const Putcitas = ()=>{
+const Putcitas = async(req = request,res = response)=>{
 
 };
 
-const Deletecitas = ()=>{
+const Deletecitas = async(req = request,res = response)=>{
 
 };
 

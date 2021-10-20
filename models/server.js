@@ -11,6 +11,9 @@ class Server{
         this.Usuarios_RoutPath = '/gim/usuarios'; 
         this.Cita_RoutPath = '/gim/citas';
         this.Login_RoutPath = '/gim/login';
+        this.Carrera_RoutPath = '/gim/carrera';
+        this.Clase_RoutPath = '/gim/clase';
+        this.Hora_RoutPath = '/gim/hora';
 
         this.middlewares();
         this.dbConnection();
@@ -21,6 +24,9 @@ class Server{
         this.app.use(this.Usuarios_RoutPath,require('../routes/user'));
         this.app.use(this.Cita_RoutPath,require('../routes/citas'));
         this.app.use(this.Login_RoutPath,require('../routes/login'));
+        this.app.use(this.Carrera_RoutPath,require('../routes/carrera'));
+        this.app.use(this.Clase_RoutPath,require('../routes/clase'));
+        this.app.use(this.Hora_RoutPath,require('../routes/hora'));
     };
 
     middlewares(){

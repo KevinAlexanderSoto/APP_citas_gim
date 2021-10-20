@@ -11,11 +11,15 @@ const {Getuser,
 
 const { existeNum, existeCarrera, existeEmail, existeUsuario } = require('../helpers/validarCamposDB');
 const {validarExisteRol} = require('../helpers/validarENUM');
+const { validarJWT } = require('../helpers/GenValidatorJWT');
 
 //TODO: solo con perimiso De admin , devuelve todos los usuarios paginados 
 router.get('/',[
     check('offset','tiene que ser un numero, entero').isInt(),
     check('limit','tiene que ser un numero, entero').isInt(),
+    check('x-token','No JWT').isJWT().not().isEmpty(),
+    validarCampos,
+    validarJWT,
     validarCampos
 ],Getuser);
 

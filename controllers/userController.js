@@ -2,8 +2,6 @@ const { response, request } = require('express');
 
 const bcryptjs = require('bcryptjs');
 
-const jwt = require('jsonwebtoken');
-
 const {Horas ,
        Usuario,
        Carreras,
@@ -96,6 +94,7 @@ const Putuser = async (req = request , resp = response)=>{
     let {nombre , numIdentidad ,tel ,carrera,email,rol}= req.body;
     tel = parseInt(tel);
     const {id} = req.query;
+    
     if (nombre !== 'noName') {
         await Usuario.update({client_name : nombre},{
             where : {
@@ -158,17 +157,24 @@ const Putuser = async (req = request , resp = response)=>{
 const Deleteuser = async (req = request , resp = response)=>{
 
     const {data}=req.body;
-
+try {
     await Usuario.update({activo : 0},{
         where : {
             client_id : data
         }
     
-    })
+    });
 
     resp.status(200).json({
         msg : 'OK , barrado'
     })
+
+} catch (error) {
+    res.status(500).json({
+        msg : 'Error del servidor , hable con BackEnd',
+        where : 'deleteuser' });
+}
+    
 };
 
 module.exports ={

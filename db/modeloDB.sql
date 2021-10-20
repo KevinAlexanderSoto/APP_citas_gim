@@ -107,3 +107,7 @@ VALUES ('SICOLOGIA','PRO'),
 
   INSERT INTO Citas(client_id,fecha,hora_id)
   VALUES('1','2021-12-10','2');
+
+   SET FOREIGN_KEY_CHECKS=0;  
+   DELETE FROM `bilecef1ot7xfqd9tfil`.`Clientes` WHERE (`client_id` = '1');
+   SET FOREIGN_KEY_CHECKS=1;
