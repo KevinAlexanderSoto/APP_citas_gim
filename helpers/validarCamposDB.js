@@ -36,7 +36,7 @@ const existeCarrera =  async (param)=>{
 
     const existeUsuario = async(user)=>{
         const result = await Usuario.findOne({where:{
-            client_id : user,
+            num_identidad : user,
             activo : 1
         }});
         if (result == null) {

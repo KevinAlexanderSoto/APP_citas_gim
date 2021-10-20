@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const {check, body} = require('express-validator');
+const {check, body, header} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
@@ -12,18 +12,19 @@ const {Getuser,
 const { existeNum, existeCarrera, existeEmail, existeUsuario } = require('../helpers/validarCamposDB');
 const {validarExisteRol} = require('../helpers/validarENUM');
 const { validarJWT } = require('../helpers/GenValidatorJWT');
+const { rolADMIN } = require('../middlewares/rolValido');
 
-//TODO: solo con perimiso De admin , devuelve todos los usuarios paginados 
+// solo con perimiso De admin , devuelve todos los usuarios paginados (TERMINADO)
 router.get('/',[
     check('offset','tiene que ser un numero, entero').isInt(),
     check('limit','tiene que ser un numero, entero').isInt(),
     check('x-token','No JWT').isJWT().not().isEmpty(),
     validarCampos,
     validarJWT,
-    validarCampos
+    rolADMIN
 ],Getuser);
 
-//TODO: crear nuevo usuario ADMIN con token valido de otro ADMIN 
+
 router.post('/',[
 check('nombre','nombre no valido').isString().isLength({max : 40}).not().isEmpty(),
 
@@ -44,12 +45,39 @@ check('email').custom(existeEmail),
 check('rol','Rol no es valido , solo dos letras').isString().isLength({max : 2}),
 
 check('rol').custom(validarExisteRol),
+
 validarCampos,
 ],Postuser);
 
+router.post('/ad',[// crear nuevo usuario ADMIN con token valido de otro ADMIN 
+    validarJWT,
+    rolADMIN,
+    body('nombre','nombre no valido').isString().isLength({max : 40}).not().isEmpty(),
+    
+    body('numIdentidad','numero no valido').isInt().isLength({max : 20}).not().isEmpty(),
+    
+    body('numIdentidad').custom(existeNum), 
+    
+    body('password','tiene que ser mas de 6 y menor que 40 caracters').isLength({min : 6 , max: 40}).not().isEmpty(),
+    
+    check('carrera','la carrera se ferencia por un numero').isInt(),
+    
+    check('carrera').custom(existeCarrera),
+    
+    check('email','no es un correo valido').isLength({max : 80}).isEmail().not().isEmpty(),
+    
+    check('email').custom(existeEmail),
+    
+    check('rol','Rol no es valido , solo dos letras').isString().isLength({max : 2}),
+    
+    check('rol').custom(validarExisteRol),
+    
+    validarCampos,
+    ],Postuser);
 
 // TODO: actualizar datos como : CC , carrera , numero. VALIDAR USER CON JWT
 router.put('/',[
+    validarJWT,
     body('nombre','nombre no valido').default('noName').isString().isLength({max : 40}),
 
    body('numIdentidad','Valor no valido').default(00).isInt().isLength({max : 20}), 
@@ -69,17 +97,16 @@ body('email').default('noemail@no.com').custom(existeEmail),
 check('rol','Rol no es valido , solo dos letras').default('no').isString().isLength({max : 2}),
 
 check('rol').default('no').custom(validarExisteRol),
-
-check('id','Falta el id a actualizar o no es valido').isInt().not().isEmpty(),
-
    validarCampos 
 ],Putuser); 
 
-router.delete('/',[
-    body('data','id no valido o faltante ').isInt().not().isEmpty(),
+router.delete('/',[// solo usuario ADMIN "AD"
+    validarJWT,
+    rolADMIN,
+    body('data','numero identidad no valido o faltante ').isInt().not().isEmpty(),
     body('data').custom(existeUsuario),
     validarCampos,
 
-],Deleteuser);//TODO : solo usuario ADMIN "AD"
+],Deleteuser);
 
 module.exports = router;

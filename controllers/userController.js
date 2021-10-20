@@ -55,7 +55,10 @@ const Getuser = async (req = request , resp = response)=>{
 const Postuser  = async (req = request , resp = response)=>{
 
     const {nombre,numIdentidad,password, tel ,carrera,email,rol} =  req.body;
-
+    const token = req.usuario;
+    if ( rol == 'AD' && !token) {
+        return resp.status(401).json({msg :  ' no autorizado para crear usuarios con este rol'});
+    }
        //encriptar contraseña
        const salt = bcryptjs.genSaltSync(11);
        const hash = bcryptjs.hashSync(password,salt);
@@ -93,8 +96,8 @@ const Postuser  = async (req = request , resp = response)=>{
 const Putuser = async (req = request , resp = response)=>{
     let {nombre , numIdentidad ,tel ,carrera,email,rol}= req.body;
     tel = parseInt(tel);
-    const {id} = req.query;
-    
+    const {client_id } = req.usuario;
+    const id = client_id;
     if (nombre !== 'noName') {
         await Usuario.update({client_name : nombre},{
             where : {
@@ -160,7 +163,7 @@ const Deleteuser = async (req = request , resp = response)=>{
 try {
     await Usuario.update({activo : 0},{
         where : {
-            client_id : data
+            num_identidad: data
         }
     
     });

@@ -18,6 +18,10 @@ fecha :{
 hora_id :{
     type: DataTypes.INTEGER.UNSIGNED, // LLAVE FORANEA DE HORAS
     allowNull : false
+},
+asistencia : {
+    type : DataTypes.TINYINT,
+    defaultValue : 0
 }
 },{
     // I don't want createdAt and updatedAt

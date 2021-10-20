@@ -4,7 +4,12 @@ const {body,check}= require('express-validator');
 
 const router = new Router();
 
-router.get('/',);
+
+router.get('/',gethoras);
+
+router.post('/',crearhora);
+
+router.put('/',actuhora);
 
 
 
