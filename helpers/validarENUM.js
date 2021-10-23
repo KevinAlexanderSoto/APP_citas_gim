@@ -10,10 +10,15 @@ if (!result) {
 
 
 const validarDia =  async ( param)=>{
+    if (param !== "ñ") {
+     
     const DiaValido = ['L','M','MM','J','V','S'];
     const result = await DiaValido.includes(param)
+    
     if ( !result) {
         throw new Error('Dia no exiate ,dias validos L, M , MM ,J , V ,S')
+    } 
+      
     }
     };
 

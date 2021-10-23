@@ -8,11 +8,11 @@ class Server{
         this.PORT = process.env.PORT;
 
         //rutas
-        this.Usuarios_RoutPath = '/gim/usuarios'; 
-        this.Cita_RoutPath = '/gim/citas';
-        this.Login_RoutPath = '/gim/login';
-        this.Carrera_RoutPath = '/gim/carrera';
-        this.Clase_RoutPath = '/gim/clase';
+        this.Usuarios_RoutPath = '/gim/usuarios';//ok 
+        this.Cita_RoutPath = '/gim/citas';//ok
+        this.Login_RoutPath = '/gim/login';//ok
+        this.Carrera_RoutPath = '/gim/carrera';//ok
+        this.Clase_RoutPath = '/gim/clase';//ok 
         this.Hora_RoutPath = '/gim/hora';
 
         this.middlewares();
